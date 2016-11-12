@@ -33,8 +33,31 @@ pinMode(boomLED, OUTPUT);
 }
 
 void loop() {
-  if (digitalRead(wires[randNumber])==LOW){
-    
+ // if (digitalRead(wires[randNumber])==LOW){
+ //digitalWrite(winLED,HIGH);
+ //sevseg.setNumber(0, 5);
+ //sevseg.refreshDisplay();
+  //}
+
+ // else {
+   static unsigned long timer = millis();
+  static int Seconds = 301; 
+if (Seconds>=0){
+  if (millis() >= timer) {
+        Seconds--; // 100 milliSeconds is equal to 1 deciSecond
+    timer += 1000; 
+   // if (deciSeconds == 10000) { // Reset to 0 after counting for 1000 seconds.
+     // deciSeconds=0;
+    //}
+    sevseg.setNumber(Seconds, 5);
   }
- 
+
+  sevseg.refreshDisplay(); // Must run repeatedly
+
 }
+  else{
+ digitalWrite(13,HIGH);
+ sevseg.setNumber(0, 5);
+ //sevseg.refreshDisplay();
+ }   
+  }
