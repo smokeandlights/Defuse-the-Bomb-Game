@@ -1,42 +1,40 @@
-const int wire1=3;
-const int wire2=8;
-const int wire3=13;
-const int safeLED=7;
-const int warningLED=11;
-const int boomLED=2;
+int winLED = 0;
+int boomLED = 1;
+
+#include "SevSeg.h"
+
+SevSeg sevseg;
 
 void setup() {
   // put your setup code here, to run once:
-pinMode(safeLED, OUTPUT);
-pinMode(warningLED, OUTPUT);
+pinMode(winLED, OUTPUT);
 pinMode(boomLED, OUTPUT);
 
-}
+//Countdown Timer stuff
 
-void loop() {
-  // put your main code here, to run repeatedly:
+ byte numDigits = 4;   
+ byte digitPins[] = {2, 3, 4, 5};
+ byte segmentPins[] = {6, 7, 8, 9, 10, 11, 12, 13};
 
-long randNumber;
+  sevseg.begin(COMMON_ANODE, numDigits, digitPins, segmentPins);
+  sevseg.setBrightness(90);
 
-void setup(){
+  //Randomizing the chosen Wire
+  randomSeed(analogRead(A5));//floating analog pin
+  unsigned int randNumber;
+  randNumber = random(0,2);
+  int wires[]= {A0,A1,A2};
+  int winner = wires[randNumber];
+  
+  
   Serial.begin(9600);
 
-  // if analog input pin 0 is unconnected, random analog
-  // noise will cause the call to randomSeed() to generate
-  // different seed numbers each time the sketch runs.
-  // randomSeed() will then shuffle the random function.
-  randomSeed(analogRead(0));
+  Serial.print(winner);
 }
 
 void loop() {
-  // print a random number from 0 to 299
-  randNumber = random(300);
-  Serial.println(randNumber);  
-
-  // print a random number from 1 to 3
-  randNumber = random(1, 4);
-  Serial.println(randNumber);
-
-  delay(50);
-}
+  if (digitalRead(wires[randNumber])==LOW){
+    
+  }
+ 
 }
