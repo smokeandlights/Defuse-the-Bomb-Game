@@ -42,67 +42,69 @@ void loop() {
             Serial.println(randNumber);   //comment out the LED functions in setup
             Serial.print("winner: ");     //AND UNCOMMENT the Serial.begin command.
             Serial.println(winner);       //
-                  }
+            }
            if(winner==14){
             if (digitalRead(15 )==LOW||digitalRead(16)==LOW){
               deciSeconds=0;
               digitalWrite(boomLED, HIGH);
+              Serial.print("YOU LOST!"); // replaces LED function when Serial is enabled
               sevseg.setNumber(8888,5);
               sevseg.refreshDisplay();
-            }
+             }
             if (digitalRead(14)==LOW){
+            digitalWrite(14, LOW);      // Once the wire is cut, it's cut.
             digitalWrite(winLED,HIGH);
+            Serial.print("YOU WIN!"); // replaces LED function when Serial is enabled
             sevseg.setNumber(deciSeconds-1, 1);
             sevseg.refreshDisplay();
-     }
-           }
+             }
+            }
           if(winner==15){
             if (digitalRead(14 )==LOW||digitalRead(16)==LOW){
               deciSeconds=0;
               digitalWrite(boomLED, HIGH);
+              Serial.print("YOU LOST!"); // replaces LED function when Serial is enabled
               sevseg.setNumber(8888,5);
               sevseg.refreshDisplay();
-            }
-                if (digitalRead(15)==LOW){
-            digitalWrite(winLED,HIGH);
-            sevseg.setNumber(deciSeconds-1, 1);
-            sevseg.refreshDisplay();
-                  }
-           }
+              }
+            if (digitalRead(15)==LOW){
+             digitalWrite(15, LOW);      // Once the wire is cut, it's cut.
+             digitalWrite(winLED,HIGH);
+             Serial.print("YOU WIN!"); // replaces LED function when Serial is enabled
+             sevseg.setNumber(deciSeconds-1, 1);
+             sevseg.refreshDisplay();
+              }
+             }
            if(winner==16){
             if (digitalRead(14 )==LOW||digitalRead(15)==LOW){
               deciSeconds=0;
               digitalWrite(boomLED, HIGH);
+              Serial.print("YOU LOST!"); // replaces LED function when Serial is enabled
               sevseg.setNumber(8888,5);
               sevseg.refreshDisplay();
-                }
+              }
             if (digitalRead(16)==LOW){
+              digitalWrite(16, LOW);     // Once the wire is cut, it's cut.
               digitalWrite(winLED,HIGH);
+              Serial.print("YOU WIN!"); // replaces LED function when Serial is enabled
               sevseg.setNumber(deciSeconds-1, 1);
               sevseg.refreshDisplay();
-                }
-           }    
- else {
-//     static unsigned long timer = millis();
-//     static int deciSeconds = startTime; 
-   
-  
-    
-    if(deciSeconds>=0){
-      if (millis() >= timer) {
-        deciSeconds--; // 100 milliSeconds is equal to 1 deciSecond
-        timer += 100; 
-         
-        sevseg.setNumber(deciSeconds, 1);
-      }
-      sevseg.refreshDisplay();
-    }
-    else{
-     digitalWrite(boomLED,HIGH);
-     sevseg.setNumber(8888, 5);
-     sevseg.refreshDisplay();
-     }   
-    
- sevseg.refreshDisplay();
- }
+               }
+              }    
+            else {
+                if(deciSeconds>=0){
+                  if (millis() >= timer) {
+                    deciSeconds--; // 100 milliSeconds is equal to 1 deciSecond
+                    timer += 100; 
+                    sevseg.setNumber(deciSeconds, 1);
+                    }
+                    sevseg.refreshDisplay();
+                    }
+                else{
+                 digitalWrite(boomLED,HIGH);
+                 sevseg.setNumber(8888, 5);
+                 sevseg.refreshDisplay();
+                 }   
+                 sevseg.refreshDisplay();
+                 }
  }
