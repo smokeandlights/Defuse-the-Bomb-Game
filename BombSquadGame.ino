@@ -11,7 +11,8 @@ int wires[]= {14,15,16};
 //Countdown Timer stuff, so it's available elswhere
 static unsigned long timer = millis();
 static int deciSeconds = startTime; 
-
+int seconds = 0;
+int centiSeconds = 0;
 void setup() {
 //    Serial.begin(9600);     //Comment out the LEDs if you uncomment this.
     
@@ -83,11 +84,6 @@ void loop() {
                 }
            }    
  else {
-//     static unsigned long timer = millis();
-//     static int deciSeconds = startTime; 
-   
-  
-    
     if(deciSeconds>=0){
       if (millis() >= timer) {
         deciSeconds--; // 100 milliSeconds is equal to 1 deciSecond
