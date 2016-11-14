@@ -7,15 +7,19 @@ int minutes = 1;
 int startTime = ((minutes *600)+1);
 int winner=0;
 int wires[]= {14,15,16};
-  
+
+//Countdown Timer stuff, so it's available elswhere
+static unsigned long timer = millis();
+static int deciSeconds = startTime; 
+
 void setup() {
-//    Serial.begin(9600);
+//    Serial.begin(9600);     //Comment out the LEDs if you uncomment this.
     
-    pinMode(winLED, OUTPUT);
-    pinMode(boomLED, OUTPUT);
-    digitalWrite(winLED,LOW);
-    digitalWrite(boomLED,LOW);
-//    
+    pinMode(winLED, OUTPUT);  //Comment these 4 lines about LEDs out if you want to enable Serial
+    pinMode(boomLED, OUTPUT); //functions . They interfere with each other.
+    digitalWrite(winLED,LOW); //
+    digitalWrite(boomLED,LOW);//
+       
     //Countdown Timer stuff
      
      byte numDigits = 4;   
@@ -27,64 +31,78 @@ void setup() {
 
      }
           
-void loop() {
-  if(millis()<= 5){
-    int randNumber;
-    randomSeed(analogRead(A5));//floating analog pin
-    randNumber = random(0,3);
-    winner = wires[randNumber];
+void loop() {   
+          if(millis()<= 5){
+            int randNumber;
+            randomSeed(analogRead(A5));//floating analog pin
+            randNumber = random(0,3);
+            winner = wires[randNumber];
             
-//    Serial.print("randNumber: ");
-//    Serial.println(randNumber);
-//    Serial.print("winner: ");
-//    Serial.println(winner);
-          }
-//           if(winner==14){
-//            if (digitalRead(15 )||digitalRead(16)==LOW){
-//              digitalWrite(boomLED, HIGH);
-//              sevseg.setNumber(8888,5);
-//              sevseg.refreshDisplay();
-//            }
-//           }
-//          if(winner==15){
-//            if (digitalRead(14 )||digitalRead(16)==LOW){
-//              digitalWrite(boomLED, HIGH);
-//              sevseg.setNumber(8888,5);
-//              sevseg.refreshDisplay();
-//            }
-//           }
-//           if(winner==16){
-//            if (digitalRead(14 )||digitalRead(15)==LOW){
-//              digitalWrite(boomLED, HIGH);
-//              sevseg.setNumber(8888,5);
-//              sevseg.refreshDisplay();
-//            }
-//           }
-//           
-//  if (digitalRead(wires[winner])==LOW){
-//    digitalWrite(winLED,HIGH);
-//    sevseg.setNumber(0, 5);
-//    sevseg.refreshDisplay();
-//     }
-//    
-// else {
-     static unsigned long timer = millis();
-     static int deciSeconds = startTime; 
+            Serial.print("randNumber: "); //This won't work unless you 
+            Serial.println(randNumber);   //comment out the LED functions in setup
+            Serial.print("winner: ");     //AND UNCOMMENT the Serial.begin command.
+            Serial.println(winner);       //
+                  }
+           if(winner==14){
+            if (digitalRead(15 )==LOW||digitalRead(16)==LOW){
+              deciSeconds=0;
+              digitalWrite(boomLED, HIGH);
+              sevseg.setNumber(8888,5);
+              sevseg.refreshDisplay();
+            }
+            if (digitalRead(14)==LOW){
+            digitalWrite(winLED,HIGH);
+            sevseg.setNumber(deciSeconds-1, 1);
+            sevseg.refreshDisplay();
+     }
+           }
+          if(winner==15){
+            if (digitalRead(14 )==LOW||digitalRead(16)==LOW){
+              deciSeconds=0;
+              digitalWrite(boomLED, HIGH);
+              sevseg.setNumber(8888,5);
+              sevseg.refreshDisplay();
+            }
+                if (digitalRead(15)==LOW){
+            digitalWrite(winLED,HIGH);
+            sevseg.setNumber(deciSeconds-1, 1);
+            sevseg.refreshDisplay();
+                  }
+           }
+           if(winner==16){
+            if (digitalRead(14 )==LOW||digitalRead(15)==LOW){
+              deciSeconds=0;
+              digitalWrite(boomLED, HIGH);
+              sevseg.setNumber(8888,5);
+              sevseg.refreshDisplay();
+                }
+            if (digitalRead(16)==LOW){
+              digitalWrite(winLED,HIGH);
+              sevseg.setNumber(deciSeconds-1, 1);
+              sevseg.refreshDisplay();
+                }
+           }    
+ else {
+//     static unsigned long timer = millis();
+//     static int deciSeconds = startTime; 
+   
+  
+    
     if(deciSeconds>=0){
       if (millis() >= timer) {
         deciSeconds--; // 100 milliSeconds is equal to 1 deciSecond
         timer += 100; 
-            // if (deciSeconds == 10000) { // Reset to 0 after counting for 1000 seconds.
-            // deciSeconds=0;
-            //}
+         
         sevseg.setNumber(deciSeconds, 1);
       }
-      sevseg.refreshDisplay(); // Must run repeatedly
+      sevseg.refreshDisplay();
     }
     else{
      digitalWrite(boomLED,HIGH);
      sevseg.setNumber(8888, 5);
      sevseg.refreshDisplay();
      }   
+    
+ sevseg.refreshDisplay();
  }
-//}
+ }
