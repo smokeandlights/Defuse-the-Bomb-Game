@@ -98,11 +98,14 @@ void loop() {
             else {
                 if(deciSeconds>=0){
                   if (millis() >= timer) {
-                    deciSeconds--; // 100 milliSeconds is equal to 1 deciSecond
-                    timer += 100; 
-                    sevseg.setNumber(deciSeconds, 1);
-                    }
-                    sevseg.refreshDisplay();
+//                     if(boomLED||winLED==HIGH){ //Try this to stop the timer on win & lose
+//                         break;                 //if it doesn't work here, try it under "if(deciSeconds>=0){"
+//                     }
+                        deciSeconds--; // 100 milliSeconds is equal to 1 deciSecond
+                        timer += 100; 
+                        sevseg.setNumber(deciSeconds, 1);
+                        }
+                        sevseg.refreshDisplay();
                     }
                 else{
                  digitalWrite(boomLED,HIGH);
