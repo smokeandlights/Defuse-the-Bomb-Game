@@ -8,6 +8,7 @@ int startTime = ((minutes *600)+1);
 int winner=0;
 int wires[]= {14,15,16};
 int buzzer = A3;
+int youWIN = false;
 
 //Countdown Timer stuff, so it's available elswhere
 static unsigned long timer = millis();
@@ -33,6 +34,7 @@ void setup() {
      }
           
 void loop() {   
+ 
           if(millis()<= 5){
             int randNumber;
             randomSeed(analogRead(A5));//floating analog pin
@@ -56,6 +58,7 @@ void loop() {
             if (digitalRead(14)==LOW){
             digitalWrite(14, LOW);      // Once the wire is cut, it's cut.
             digitalWrite(winLED,HIGH);
+            youWIN = true;
             Serial.print("YOU WIN!"); // replaces LED function when Serial is enabled
             sevseg.setNumber(deciSeconds-1, 1);
             sevseg.refreshDisplay();
@@ -73,6 +76,7 @@ void loop() {
             if (digitalRead(15)==LOW){
              digitalWrite(15, LOW);      // Once the wire is cut, it's cut.
              digitalWrite(winLED,HIGH);
+             youWIN = true;
              Serial.print("YOU WIN!"); // replaces LED function when Serial is enabled
              sevseg.setNumber(deciSeconds-1, 1);
              sevseg.refreshDisplay();
@@ -90,18 +94,20 @@ void loop() {
             if (digitalRead(16)==LOW){
               digitalWrite(16, LOW);     // Once the wire is cut, it's cut.
               digitalWrite(winLED,HIGH);
+              youWIN = true;
               Serial.print("YOU WIN!"); // replaces LED function when Serial is enabled
               sevseg.setNumber(deciSeconds-1, 1);
               sevseg.refreshDisplay();
                }
               }    
             else {
+              if(youWIN==false){
                 if(deciSeconds>=0){
+                   
+                     
                   if (millis() >= timer) {
-//                     if(boomLED||winLED==HIGH){ //Try this to stop the timer on win & lose
-//                         break;                 //if it doesn't work here, try it under "if(deciSeconds>=0){"
-//                     }
-                        deciSeconds--; // 100 milliSeconds is equal to 1 deciSecond
+                     
+                        deciSeconds--; 
                         timer += 100; 
                         sevseg.setNumber(deciSeconds, 1);
                         }
@@ -113,6 +119,7 @@ void loop() {
                  sevseg.setNumber(8888, 5);
                  sevseg.refreshDisplay();
                  }   
-                 sevseg.refreshDisplay();
+                  sevseg.refreshDisplay();
                  }
+            }
  }
