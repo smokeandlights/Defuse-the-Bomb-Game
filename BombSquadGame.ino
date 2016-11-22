@@ -8,6 +8,7 @@ int startTime = ((minutes * 600) + 1);
 int winner = 0;
 int wires[] = {14, 15, 16};
 int buzzer = A3;
+int pitch = 100;
 int youWIN = false;
 
 //Countdown Timer stuff, so it's available elswhere
@@ -50,7 +51,7 @@ void loop() {
     if (digitalRead(15 ) == LOW || digitalRead(16) == LOW) {
       deciSeconds = 0;
       digitalWrite(boomLED, HIGH);
-      tone(buzzer, 31, 500);
+      tone(buzzer, pitch, 500);
       Serial.print("YOU LOST!"); // replaces LED function when Serial is enabled
       sevseg.setNumber(8888, 5);
       sevseg.refreshDisplay();
@@ -68,7 +69,7 @@ void loop() {
     if (digitalRead(14 ) == LOW || digitalRead(16) == LOW) {
       deciSeconds = 0;
       digitalWrite(boomLED, HIGH);
-      tone(buzzer, 31, 500);
+      tone(buzzer, pitch, 500);
       Serial.print("YOU LOST!"); // replaces LED function when Serial is enabled
       sevseg.setNumber(8888, 5);
       sevseg.refreshDisplay();
@@ -86,7 +87,7 @@ void loop() {
     if (digitalRead(14 ) == LOW || digitalRead(15) == LOW) {
       deciSeconds = 0;
       digitalWrite(boomLED, HIGH);
-      tone(buzzer, 31, 500);
+      tone(buzzer, pitch, 500);
       Serial.print("YOU LOST!"); // replaces LED function when Serial is enabled
       sevseg.setNumber(8888, 5);
       sevseg.refreshDisplay();
@@ -115,7 +116,7 @@ void loop() {
       }
       else {
         digitalWrite(boomLED, HIGH);
-        tone(buzzer, 31, 500);
+        tone(buzzer, pitch, 500);
         sevseg.setNumber(8888, 5);
         sevseg.refreshDisplay();
       }
