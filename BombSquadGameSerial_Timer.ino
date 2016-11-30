@@ -78,7 +78,7 @@ void loop() {
   if (deciSeconds >= 1) {
     if (youWIN == false && youLOSE == false) {
       if (deciSeconds != 8888) {
-        if (millis() >= timer && millis() > 0) {
+        if (millis() >= timer && deciSeconds >= 0) {
           deciSeconds--;
           timer += 100;
           countdown.print(deciSeconds);
