@@ -15,10 +15,12 @@ int boomLED = 0;
 int minutes = 1;
 int startTime = ((minutes * 600) + 1);
 int winner = 0;
-int wires[] = {14, 15, 16};
+int wires[] = {A0, A1, A2};
 int buzzer = A3;
 int pitch = 100;
 bool youWIN = false;
+bool youLOSE = false;
+
 
 //Countdown Timer stuff, so it's available elswhere
 static unsigned long timer = millis();
@@ -36,15 +38,6 @@ void setup() {
   digitalWrite(winLED, LOW); //
   digitalWrite(boomLED, LOW); //
 
-  //Countdown Timer stuff
-  //
-  //  byte numDigits = 4;
-  //  byte digitPins[] = {2, 3, 4, 5};
-  //  byte segmentPins[] = {6, 7, 8, 9, 10, 11, 12, 13};
-  //
-  //  sevseg.begin(COMMON_ANODE, numDigits, digitPins, segmentPins);
-  //  sevseg.setBrightness(90);
-
 }
 
 void loop() {
@@ -60,67 +53,28 @@ void loop() {
     Serial.print("winner: ");     //AND UNCOMMENT the Serial.begin command.
     Serial.println(winner);       //
   }
-  if (winner == 14) {
-    if (digitalRead(15 ) == LOW || digitalRead(16) == LOW) {
-      deciSeconds = 0;
-      digitalWrite(boomLED, HIGH);
-      tone(buzzer, pitch, 500);
-      Serial.print("YOU LOST!"); // replaces LED function when Serial is enabled
-      countdown.print(8888);
-      deciSeconds = 8888;
-      //      sevseg.setNumber(8888, 5);
-      //      sevseg.refreshDisplay();
+  if (winner == A0) {
+    if (digitalRead(A1 ) == LOW || digitalRead(A2) == LOW) {
+     YOULOST();
     }
-    if (digitalRead(14) == LOW) {
-      digitalWrite(14, LOW);      // Once the wire is cut, it's cut.
-      digitalWrite(winLED, HIGH);
-      youWIN = true;
-      Serial.print("YOU WIN!"); // replaces LED function when Serial is enabled
-      countdown.print(deciSeconds - 1);
-      //      sevseg.setNumber(deciSeconds - 1, 1);
-      //      sevseg.refreshDisplay();
+    if (digitalRead(A0) == LOW) {
+     YOUWON()
     }
   }
-  if (winner == 15) {
-    if (digitalRead(14 ) == LOW || digitalRead(16) == LOW) {
-      deciSeconds = 0;
-      digitalWrite(boomLED, HIGH);
-      tone(buzzer, pitch, 500);
-      Serial.print("YOU LOST!"); // replaces LED function when Serial is enabled
-      countdown.print(8888);
-      deciSeconds = 8888;
-      //      sevseg.setNumber(8888, 5);
-      //      sevseg.refreshDisplay();
+  if (winner == A1) {
+    if (digitalRead(A0 ) == LOW || digitalRead(A2) == LOW) {
+     YOULOST();
     }
-    if (digitalRead(15) == LOW) {
-      digitalWrite(15, LOW);      // Once the wire is cut, it's cut.
-      digitalWrite(winLED, HIGH);
-      youWIN = true;
-      Serial.print("YOU WIN!"); // replaces LED function when Serial is enabled
-      countdown.print(deciSeconds - 1);
-      //      sevseg.setNumber(deciSeconds - 1, 1);
-      //      sevseg.refreshDisplay();
+    if (digitalRead(A1) == LOW) {
+    YOUWON()
     }
   }
-  if (winner == 16) {
-    if (digitalRead(14 ) == LOW || digitalRead(15) == LOW) {
-      deciSeconds = 0;
-      digitalWrite(boomLED, HIGH);
-      tone(buzzer, pitch, 500);
-      Serial.print("YOU LOST!"); // replaces LED function when Serial is enabled
-      countdown.print(8888);
-      deciSeconds = 8888;
-      //      sevseg.setNumber(8888, 5);
-      //      sevseg.refreshDisplay();
+  if (winner == A2) {
+    if (digitalRead(A0 ) == LOW || digitalRead(A1) == LOW) {
+     YOULOST();
     }
-    if (digitalRead(16) == LOW) {
-      digitalWrite(16, LOW);     // Once the wire is cut, it's cut.
-      digitalWrite(winLED, HIGH);
-      youWIN = true;
-      Serial.print("YOU WIN!"); // replaces LED function when Serial is enabled
-      countdown.print(deciSeconds - 1);
-      //      sevseg.setNumber(deciSeconds - 1, 1);
-      //      sevseg.refreshDisplay();
+    if (digitalRead(A2) == LOW) {
+     YOUWON()
     }
   }
   else {
@@ -131,20 +85,28 @@ void loop() {
             deciSeconds--;
             timer += 100;
             countdown.print(deciSeconds);
-            //sevseg.setNumber(deciSeconds, 1);
+          
           }
-          //        sevseg.refreshDisplay();
         }
       }
       else {
-        digitalWrite(boomLED, HIGH);
-        tone(buzzer, pitch, 500);
-        deciSeconds = 8888;
-        countdown.print(8888);
-        //        sevseg.setNumber(8888, 5);
-        //        sevseg.refreshDisplay();
-      }
-      //      sevseg.refreshDisplay();
-    }
+        YOULOST();
+             }
+          }
   }
+}
+void YOUWON(){
+   digitalWrite(winner, LOW);     // Once the wire is cut, it's cut.
+   digitalWrite(winLED, HIGH);
+   youWIN = true;
+   Serial.print("YOU WIN!"); // replaces LED function when Serial is enabled
+   countdown.print(deciSeconds - 1);
+}
+void YOULOST(){
+  youLOSE = true;
+  digitalWrite(boomLED, HIGH);
+  tone(buzzer, pitch, 500);
+  Serial.print("YOU LOST!"); // replaces LED function when Serial is enabled
+  countdown.print(8888);
+  deciSeconds = 8888;
 }
