@@ -83,36 +83,37 @@ void loop() {
     }
 
 
-        if (deciSeconds >= 1) {
-          if (youWIN == false && youLOSE == false) {
-            if (deciSeconds != 8888) {
-              if (millis() >= timer && deciSeconds >= 0) {
-                deciSeconds--;
-                timer += 100;
-    
-                countdown.setCursor(0,0);
-                countdown.print(deciSeconds);
-              }
-            }
+    if (deciSeconds >= 1) {
+      if (youWIN == false && youLOSE == false) {
+        if (deciSeconds != 8888) {
+          if (millis() >= timer && deciSeconds >= 0) {
+            deciSeconds--;
+            timer += 100;
+
+            countdown.setCursor(0, 0);
+            countdown.print(deciSeconds);
           }
-  }
-  else {
-    YOULOST();
-  }
+        }
+      }
+    }
+    else {
+      YOULOST();
+    }
   }
 }
 
 void winTUNE() {//mario 1-up
   tone(buzzer, 659, 120);//E5
+  tone(buzzer, (659 / 2), 120);
   delay(120);//try to eliminate the delays and extend the notes - which sounds better?
   tone(buzzer, 784, 120);//G5
-  delay(120);
+  delay(130);
   tone(buzzer, 1397, 120);//F6
-  delay(120);
+  delay(130);
   tone(buzzer, 1175, 120);//D6
-  delay(120);
+  delay(130);
   tone(buzzer, 1319, 120);//E6
-  delay(120);
+  delay(130);
   tone(buzzer, 1760, 120);//A6
 }
 
@@ -128,10 +129,10 @@ void YOUWON() {
 void YOULOST() {
   youLOSE = true;
   smartLED(ledlose);
-  tone(buzzer, pitch, 500);
   Serial.print("YOU LOST!");
   countdown.setColonOn(false);
   countdown.print("LOSE");
+  tone(buzzer, pitch, 2000);
 
 }
 void smartLED(int i) {
