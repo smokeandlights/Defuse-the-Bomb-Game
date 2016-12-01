@@ -25,6 +25,8 @@ int ledoff = 0; //led switch cases
 int ledarmed = 1;
 int ledwin = 2;
 int ledlose = 3;
+unsigned long currentMillis = millis();
+unsigned long previousMillis = 0;
 
 //Countdown Timer stuff, so it's available elswhere
 static unsigned long timer = millis();
@@ -41,7 +43,6 @@ void setup() {
   countdown.setCursor(0, 1);
 
   led.begin();
-  smartLED(ledarmed);
 
 
   randomSeed(analogRead(A5));//floating analog pin
@@ -55,54 +56,64 @@ void setup() {
 }
 
 void loop() {
-  if (digitalRead(winner) == LOW) {
-    YOUWON();
-  }
-  else {
-    if (winner == A0) {
-      if (digitalRead(A1 ) == LOW || digitalRead(A2) == LOW) {
-        YOULOST();
-      }
+  smartLED(ledarmed);
+  if (youWIN == false && youLOSE == false) {
+
+
+    if (digitalRead(winner) == LOW) {
+      YOUWON();
+
     }
-    if (winner == A1) {
-      if (digitalRead(A0 ) == LOW || digitalRead(A2) == LOW) {
-        YOULOST();
+    else {
+      if (winner == A0) {
+        if (digitalRead(A1 ) == LOW || digitalRead(A2) == LOW) {
+          YOULOST();
+        }
       }
-    }
-    if (winner == A2) {
-      if (digitalRead(A0 ) == LOW || digitalRead(A1) == LOW) {
-        YOULOST();
+      if (winner == A1) {
+        if (digitalRead(A0 ) == LOW || digitalRead(A2) == LOW) {
+          YOULOST();
+        }
       }
-    }
-  }
-  if (deciSeconds >= 1) {
-    if (youWIN == false && youLOSE == false) {
-      if (deciSeconds != 8888) {
-        if (millis() >= timer && deciSeconds >= 0) {
-          deciSeconds--;
-          timer += 100;
-          countdown.print(deciSeconds);
+      if (winner == A2) {
+        if (digitalRead(A0 ) == LOW || digitalRead(A1) == LOW) {
+          YOULOST();
         }
       }
     }
+
+
+        if (deciSeconds >= 1) {
+          if (youWIN == false && youLOSE == false) {
+            if (deciSeconds != 8888) {
+              if (millis() >= timer && deciSeconds >= 0) {
+                deciSeconds--;
+                timer += 100;
+    
+                countdown.setCursor(0,0);
+                countdown.print(deciSeconds);
+              }
+            }
+          }
   }
   else {
     YOULOST();
   }
+  }
 }
 
 void winTUNE() {//mario 1-up
-  tone(buzzer, 659, 140);//E5
-  delay(10);//try to eliminate the delays and extend the notes - which sounds better?
-  tone(buzzer, 784, 140);//G5
-  delay(10);
-  tone(buzzer, 1397, 140);//F6
-  delay(10);
-  tone(buzzer, 1175, 140);//D6
-  delay(10);
-  tone(buzzer, 1319, 140);//E6
-  delay(10);
-  tone(buzzer, 1760, 140);//A6
+  tone(buzzer, 659, 120);//E5
+  delay(120);//try to eliminate the delays and extend the notes - which sounds better?
+  tone(buzzer, 784, 120);//G5
+  delay(120);
+  tone(buzzer, 1397, 120);//F6
+  delay(120);
+  tone(buzzer, 1175, 120);//D6
+  delay(120);
+  tone(buzzer, 1319, 120);//E6
+  delay(120);
+  tone(buzzer, 1760, 120);//A6
 }
 
 void YOUWON() {
@@ -119,8 +130,9 @@ void YOULOST() {
   smartLED(ledlose);
   tone(buzzer, pitch, 500);
   Serial.print("YOU LOST!");
-  countdown.print(8888);
-  deciSeconds = 8888;
+  countdown.setColonOn(false);
+  countdown.print("LOSE");
+
 }
 void smartLED(int i) {
   //"neopixel" led showing different colors & patterns for different conditions
@@ -164,4 +176,3 @@ void smartLED(int i) {
   }
 
 }
-
