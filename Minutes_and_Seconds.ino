@@ -17,14 +17,14 @@ void loop() {
       for (int seconds = 59; seconds >= 00; seconds--) {
         for (int hundreths = 99; int hundreths >= 00; int hundreths --) {
           if (minutes >= 1) {
-            Serial.print(minutes);
+            Serial.println(minutes);
             Serial.print(":");
             Serial.print(seconds);
           }
           if (minutes == 0) {
-            Serial.print(seconds);
+            Serial.println(seconds);
             Serial.print(":");
-            Serial.println(hundreths);
+            Serial.print(hundreths);
           }
           else {
             youLOSE = true;
